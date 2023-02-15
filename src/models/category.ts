@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize/types";
+import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../database";
 export interface category {
     id: number,
