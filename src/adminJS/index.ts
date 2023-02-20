@@ -3,6 +3,9 @@ import adminJSexpress from "@adminjs/express"
 import adminJSsequelize from "@adminjs/sequelize"
 import { sequelize } from "../database";
 import { adminJsResources } from "./resources";
+import { User } from "../models";
+import bcrypt from 'bcrypt'
+
 
 adminJS.registerAdapter(adminJSsequelize)
 
@@ -12,7 +15,7 @@ export const adminjs = new adminJS({
     resources: adminJsResources,
     branding: {
         companyName: 'OneBitFlix',
-    logo: '/onebitflix.svg',
+    logo: '.././public/logoOnebitflix.svg',
     theme: {
         colors: {
             primary100: '#ff0043',
@@ -33,4 +36,23 @@ export const adminjs = new adminJS({
     }
 })
 
-export const adminJsRouter = adminJSexpress.buildRouter(adminjs)
+// sistema de login admin
+export const adminJsRouter = adminJSexpress.buildAuthenticatedRouter(adminjs, {
+    authenticate: async (email, password) => {
+     const user = await User.findOne( {where: {email}})
+
+     if(user && user.role === 'admin') {
+        const matched = await bcrypt.compare(password, user.password)
+
+        if(matched){ 
+            return user
+         }
+     }
+
+     return false
+    },
+    cookiePassword: 'senha-do-cookie'
+}, null, {
+    resave: false,
+    saveUninitialized: false
+})
