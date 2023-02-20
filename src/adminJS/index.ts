@@ -1,11 +1,12 @@
-import adminJS from "adminjs";
+import adminJS, { Dashboard } from "adminjs";
 import adminJSexpress from "@adminjs/express"
 import adminJSsequelize from "@adminjs/sequelize"
 import { sequelize } from "../database";
 import { adminJsResources } from "./resources";
-import { User } from "../models";
+import { category, course, episode, User } from "../models";
 import bcrypt from 'bcrypt'
 import { locale } from "./locale";
+import AdminJS from "adminjs";
 
 
 adminJS.registerAdapter(adminJSsequelize)
@@ -35,7 +36,24 @@ export const adminjs = new adminJS({
           }
     }
     },
-    locale: locale
+    dashboard: {
+        component: AdminJS.bundle('./components/Dashboard'),
+            handler: async (req, res, context) => {
+          const Courses = await course.count()
+          const Episodes = await episode.count()
+          const Category = await category.count()
+          const StandardUsers = await User.count({ where: { role: 'user' } })
+    
+          res.json({
+            'Cursos': Courses,
+            'Episódios': Episodes,
+            'Categorias': Category,
+            'Usuários': StandardUsers
+          })
+        },
+      },
+    locale: locale,
+    
 })
 
 // sistema de login admin
