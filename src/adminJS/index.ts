@@ -5,6 +5,7 @@ import { sequelize } from "../database";
 import { adminJsResources } from "./resources";
 import { User } from "../models";
 import bcrypt from 'bcrypt'
+import { locale } from "./locale";
 
 
 adminJS.registerAdapter(adminJSsequelize)
@@ -33,7 +34,8 @@ export const adminjs = new adminJS({
               hoverBg: '#151515',
           }
     }
-    }
+    },
+    locale: locale
 })
 
 // sistema de login admin
