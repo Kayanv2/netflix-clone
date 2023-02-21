@@ -4,7 +4,7 @@ import { episode } from "./episode";
 import { User } from "./User";
 
 //associações
-category.hasMany(course)
+category.hasMany(course, { as: 'courses' })
 
 course.belongsTo(category)
 course.hasMany(episode)
