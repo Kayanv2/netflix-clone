@@ -35,25 +35,17 @@ export const episode = sequelize.define('episode', {
         allowNull: false,
         type: DataTypes.INTEGER
       },
-      video_url: {
+      videoUrl: {
         type: DataTypes.STRING
       },
-      seconds_long: {
+      secondsLong: {
         type: DataTypes.INTEGER
       },
-      course_id: {
+      courseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: { model: 'courses', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
-      },
-      created_at: {
-        allowNull: false,
-        type: DataTypes.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: DataTypes.DATE
       }
 })
